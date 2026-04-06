@@ -1,3 +1,5 @@
+import pytest
+
 def fatorial(n):
     if n <= 1:
         return 1
@@ -90,7 +92,7 @@ class PilhaArray:
         return self.topo == -1
 
 
-def validar_parenteses():
+def validar_parenteses(expressao):
     P = PilhaArray()
     aberturas = ['(','[', '{']
     fechamentos = [')', ']', '}']
@@ -112,7 +114,7 @@ def validar_parenteses():
             anterior_esperado = pares[char]
 
             if anterior != anterior_esperado:
-                return false
+                return False
     
     return P.is_empty()
 
@@ -121,7 +123,7 @@ def validar_parenteses():
 # ==========================================
 
 def test_pilha_push_e_pop():
-    p = Pilha()
+    p = PilhaArray()
     p.push(10)
     p.push(20)
     p.push(30)
@@ -130,14 +132,14 @@ def test_pilha_push_e_pop():
     assert p.pop() == 10
 
 def test_pilha_peek_nao_remove():
-    p = Pilha()
+    p = PilhaArray()
     p.push(42)
     assert p.peek() == 42
     assert p.peek() == 42  # continua la
     assert p.pop() == 42
 
 def test_pilha_is_empty():
-    p = Pilha()
+    p = PilhaArray()
     assert p.is_empty() is True
     p.push(1)
     assert p.is_empty() is False
@@ -145,19 +147,18 @@ def test_pilha_is_empty():
     assert p.is_empty() is True
 
 def test_pilha_pop_vazia_levanta_erro():
-    import pytest
-    p = Pilha()
+    
+    p = PilhaArray()
     with pytest.raises(IndexError):
         p.pop()
 
 def test_pilha_peek_vazia_levanta_erro():
-    import pytest
-    p = Pilha()
+    p = PilhaArray()
     with pytest.raises(IndexError):
         p.peek()
 
 def test_pilha_ordem_lifo():
-    p = Pilha()
+    p = PilhaArray()
     for i in range(5):
         p.push(i)
     for i in range(4, -1, -1):
@@ -200,3 +201,43 @@ def test_fecha_mais_que_abre():
 
 def test_abre_mais_que_fecha():
     assert validar_parenteses("(()") is False
+
+# Implementando Fila
+class Queue:
+    def __init__(self):
+        self.front = None
+        self.rear = None
+    
+    def enqueue(self, valor):
+        novo = Node(valor)
+
+        if self.rear is None:
+            self.front = novo
+            self.rear = novo
+        else:
+            self.rear.next = novo
+            self.rear = novo
+
+    def dequeue(self):
+        if self.front is None:
+            raise Exception("Fila vazia!")
+        
+        valor = self.front.data
+
+        self.front = self.front.next
+
+        if self.front is None:
+            self.rear = None
+
+        return valor
+    
+f = Queue()
+f.enqueue(1)
+f.enqueue(2)
+f.enqueue(3)
+
+print(f.dequeue()) # Deve ser 1
+print(f.dequeue()) # Deve ser 2
+print(f.dequeue()) # Deve ser 3
+# f.dequeue() # DEVE dar erro de fila vazia!
+

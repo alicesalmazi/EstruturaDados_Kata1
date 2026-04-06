@@ -104,3 +104,6 @@ P.renovarPilha()
 assert flatten([42]) == [42]
 P.renovarPilha()
 print(flatten([42]))
+
+# Responda: Qual é a complexidade de tempo e de espaço da sua solução? Use a notação O.
+# Apesar de alguns casos possuirem aninhamento profundo, o script só percorre apenas 1 vez cada item, por tanto, podemos dizer que a complexidade é O(n).
